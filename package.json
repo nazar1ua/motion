@@ -1,13 +1,13 @@
 {
-  "name": "@vueuse/motion",
-  "version": "2.0.0-beta.18",
+  "name": "@nazar1ua/motion",
+  "version": "2.0.0-beta.19",
   "description": "🤹 Vue Composables putting your components in motion",
-  "repository": "https://github.com/vueuse/motion",
+  "repository": "https://github.com/nazar1ua/motion",
   "bugs": {
-    "url": "https://github.com/vueuse/motion/issues"
+    "url": "https://github.com/nazar1ua/motion/issues"
   },
-  "homepage": "https://github.com/vueuse/motion#readme",
-  "author": "Yaël GUILLOUX <yael.guilloux@gmail.com>",
+  "homepage": "https://github.com/nazar1ua/motion#readme",
+  "author": "Nazar Niphone <nazar@newlancers.org>",
   "license": "MIT",
   "keywords": [
     "vue",
@@ -98,7 +98,7 @@
     "typescript": "^4.6.3",
     "unbuild": "^0.7.2",
     "upath": "^2.0.1",
-    "vite": "2.9.1",
+    "vite": "2.9.13",
     "vite-plugin-windicss": "^1.8.3",
     "vitepress": "^0.22.3",
     "vitest": "^0.8.2",

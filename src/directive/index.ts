@@ -52,6 +52,7 @@ export const directive = (
     // Cleanup the unregistered element motion instance
     // @ts-expect-error - we know that the element is a HTMLElement
     if (el.motionInstance)
+      // @ts-expect-error - we know that the element is a HTMLElement
       el.motionInstance.stop()
   }
 

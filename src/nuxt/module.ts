@@ -1,4 +1,4 @@
-import { addAutoImport, addPlugin, createResolver, defineNuxtModule, resolveModule } from '@nuxt/kit'
+import { addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import type { ModuleOptions, MotionPluginOptions } from '../types'
 
 const DEFAULTS: ModuleOptions = {}
@@ -10,22 +10,19 @@ export default defineNuxtModule<ModuleOptions>({
     name: '@vueuse/motion',
     configKey: CONFIG_KEY,
     compatibility: {
-      nuxt: '^3.0.0-rc.3',
+      nuxt: '^3.0.0',
       bridge: true,
     },
   },
   defaults: DEFAULTS,
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
-    const resolveRuntimeModule = (path: string) => resolveModule(path, { paths: resolve('./runtime') })
 
     // Push options to runtimeConfig
-    nuxt.options.publicRuntimeConfig.motion = options
+    nuxt.options.runtimeConfig.public.motion = options
 
     // Add templates (options and directives)
-    addPlugin({
-      src: resolveRuntimeModule('./templates/motion.js'),
-    })
+    addPlugin(resolve('./runtime/templates/motion.js'))
 
     // Transpile necessary packages at build time
     if (!nuxt.options.build.transpile)
@@ -47,20 +44,24 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt.options.alias.tslib = 'tslib/tslib.es6.js'
 
     // Add auto imports
-    addAutoImport([
-      { name: 'reactiveStyle', as: 'reactiveStyle', from: resolveRuntimeModule('../../index') },
-      { name: 'reactiveTransform', as: 'reactiveTransform', from: resolveRuntimeModule('../../index') },
-      { name: 'useElementStyle', as: 'useElementStyle', from: resolveRuntimeModule('../../index') },
-      { name: 'useElementTransform', as: 'useElementTransform', from: resolveRuntimeModule('../../index') },
-      { name: 'useMotion', as: 'useMotion', from: resolveRuntimeModule('../../index') },
-      { name: 'useMotionControls', as: 'useMotionControls', from: resolveRuntimeModule('../../index') },
-      { name: 'useMotionProperties', as: 'useMotionProperties', from: resolveRuntimeModule('../../index') },
-      { name: 'useMotions', as: 'useMotions', from: resolveRuntimeModule('../../index') },
-      { name: 'useMotionTransitions', as: 'useMotionTransitions', from: resolveRuntimeModule('../../index') },
-      { name: 'useMotionVariants', as: 'useMotionVariants', from: resolveRuntimeModule('../../index') },
-      { name: 'useSpring', as: 'useSpring', from: resolveRuntimeModule('../../index') },
-      { name: 'useReducedMotion', as: 'useReducedMotion', from: resolveRuntimeModule('../../index') },
-    ])
+    nuxt.hook('nitro:config', (nitroConfig) => {
+      if (!nitroConfig.imports) nitroConfig.imports = { imports: [] }
+      if (!nitroConfig.imports.imports) nitroConfig.imports.imports = []
+
+      nitroConfig.imports.imports.push({ name: 'reactiveStyle', as: 'reactiveStyle', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'reactiveStyle', as: 'reactiveStyle', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'reactiveTransform', as: 'reactiveTransform', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'useElementStyle', as: 'useElementStyle', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'useElementTransform', as: 'useElementTransform', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'useMotion', as: 'useMotion', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'useMotionControls', as: 'useMotionControls', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'useMotionProperties', as: 'useMotionProperties', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'useMotions', as: 'useMotions', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'useMotionTransitions', as: 'useMotionTransitions', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'useMotionVariants', as: 'useMotionVariants', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'useSpring', as: 'useSpring', from: resolve('../index') })
+      nitroConfig.imports.imports.push({ name: 'useReducedMotion', as: 'useReducedMotion', from: resolve('../index') })
+    })
   },
 })
 
